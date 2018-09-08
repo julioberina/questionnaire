@@ -18,5 +18,5 @@
       :about (display-response "<p>About</p>"))))
 
 (defn -main [& args]
-  (let [server (run-server handler {:port 8000})]
-    (println "Server started at port 8000")))
+  (let [server (run-server handler {:port 3000})]
+    (println "Server started at port 3000")))
