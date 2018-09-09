@@ -2,20 +2,21 @@
   (:require [bidi.ring :as br]
             [bidi.bidi :as bd]
             [org.httpkit.server :refer :all]
-            [ring.util.response :refer :all])
+            [ring.util.response :refer :all]
+            [clojure.java.io :as io])
   (:gen-class))
 
-(defn display-response [body]
+(defn serve-index-html []
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body body})
+   :body (slurp (io/resource "public/index.html"))})
 
 (defn handler [req]
   (let [routes ["/" {"" :index
                      "about" :about}]]
     (case (:handler (bd/match-route routes (:uri req)))
-      :index (display-response "<h1>Index</h1>")
-      :about (display-response "<p>About</p>"))))
+      :index (serve-index-html)
+      :about (serve-index-html))))
 
 (defn -main [& args]
   (let [server (run-server handler {:port 3000})]
